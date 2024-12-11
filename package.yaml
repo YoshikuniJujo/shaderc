@@ -1,0 +1,58 @@
+name:                shaderc
+version:             0.1.0.5
+github:              "YoshikuniJujo/shaderc"
+license:             BSD3
+author:              "Yoshikuni Jujo"
+maintainer:          "yoshikuni.jujo@gmail.com"
+copyright:           "2022 Yoshikuni Jujo"
+
+extra-source-files:
+- README.md
+- ChangeLog.md
+
+# Metadata used when publishing your package
+synopsis:            A collection of tools and libraries for Vulkan shader compilation
+category:            Language
+
+# To avoid duplicated efforts in documentation and dealing with the
+# complications of embedding Haddock markup inside cabal files, it is
+# common to point users to the README.md file.
+description:         Please see the README on GitHub at <https://github.com/YoshikuniJujo/shaderc#readme>
+
+dependencies:
+- base >= 4.7 && < 5
+- template-haskell < 3
+- bytestring < 1
+- mtl < 3
+- data-default < 1
+- language-spir-v < 1
+- nowdoc < 1
+- exception-hierarchy < 1
+- c-enum < 1
+- c-struct < 1
+- storable-peek-poke < 1
+
+library:
+  source-dirs: src
+  pkg-config-dependencies:
+  - shaderc
+  exposed-modules:
+  - Language.SpirV.Shaderc
+  - Language.SpirV.Shaderc.TH
+  - Language.SpirV.Shaderc.Exception
+  - Language.SpirV.Shaderc.Exception.Enum
+  - Language.SpirV.Shaderc.CompileOptions
+
+data-files:
+- data/ShaderKind.txt
+
+tests:
+  shaderc-test:
+    main:                Spec.hs
+    source-dirs:         test
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - shaderc
