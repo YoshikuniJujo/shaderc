@@ -76,9 +76,9 @@ setIncludeCallbacks opts rfun mud = do
 	(castPtr -> pud) <- ContT $ withPokedMaybe mud
 	lift $ C.setIncludeCallbacks opts crfn crrfn pud
 
-instance Default (C ()) where def = defaultCompileOptions
+instance Default (C ud) where def = defaultCompileOptions
 
-defaultCompileOptions :: C ()
+defaultCompileOptions :: C ud
 defaultCompileOptions = C {
 	cMacroDefinitions = [],
 	cSourceLanguage = Nothing,
