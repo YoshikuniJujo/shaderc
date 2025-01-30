@@ -1,4 +1,4 @@
-{-# LANGUAGE BlockArguments #-}
+{-# LANGUAGE BlockArguments, OverloadedStrings #-}
 {-# LANGUAGE TypeApplications, ScopedTypeVariables #-}
 {-# LANGUAGE DataKinds, KindSignatures #-}
 {-# LANGUAGE ViewPatterns #-}
@@ -26,7 +26,7 @@ import qualified Shaderc.CompilationResult.Core as CompilationResult
 compile :: forall ud sknd . (Storable ud, IsShaderKind sknd) =>
 	SourceText -> InputFileName -> EntryPointName ->
 	CompileOptions.C ud -> IO (S sknd)
-compile src ifnm epnm opts = ($ pure) $ runContT do
+compile src ifnm_ epnm opts = ($ pure) $ runContT do
 	cmp <- lift C.compilerInitialize
 	rslt <- M.compileIntoSpv cmp src (shaderKind @sknd) ifnm epnm opts
 	lift $ throwUnlessSuccess rslt
@@ -36,6 +36,7 @@ compile src ifnm epnm opts = ($ pure) $ runContT do
 		CompilationResult.release rslt
 		C.compilerRelease cmp
 		pure $ S spv
+	where ifnm = case ifnm_ of "" -> "<no name>"; _ -> ifnm_
 
 type SourceText = BS.ByteString
 type InputFileName = BS.ByteString
